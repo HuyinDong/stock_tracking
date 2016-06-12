@@ -3,8 +3,8 @@
         Resources to schedule
       </h1>
 </section>
- <section class="content">
-     <div class="row">
+ <section class="content"  ng-app="resources" ng-controller = "resourcesCtrl">
+     <div class="row" >
        <div class="col-md-12">
          <!-- Custom Tabs -->
          <div class="nav-tabs-custom">
@@ -23,25 +23,29 @@
               <h3 class="box-title">Professors List</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <table class="table table-bordered">
-                <tr>
-                  <th style="width: 10px">#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th style="width: 40px">Status</th>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>Fix and squish bugs</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-green">90%</span></td>
-                </tr>
-              </table>
+            <div class="box-body" >
+                <table id="example" class="display" cellspacing="0" width="100%"
+                    >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="pro in pros">
+                                <th>{{pro.pid}}</th>
+                                <th>{{pro.firstname}}</th>
+                                <th>{{pro.lastname}}</th>
+                                <th>{{pro.type}}</th>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+            <div class="box-footer">
+              <button class="btn btn-warning pull-center" ng-click = "deletePro()">Delete professor</button>
             </div>
           </div>
                  </div>
@@ -50,45 +54,44 @@
            <div class="box-header with-border">
              <h3 class="box-title">Add new professor</h3>
            </div>
-           <!-- /.box-header -->
-           <!-- form start -->
+
            <form class="form-horizontal">
              <div class="box-body">
                <div class="form-group">
-                 <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
+                 <label for="first" class="col-sm-3 control-label">First Name</label>
                  <div class="col-sm-8">
-                   <input type="email" class="form-control" id="inputEmail3" placeholder="First Name">
+                   <input type="text" class="form-control" id="first" placeholder="First Name">
                  </div>
                </div>
                <div class="form-group">
-                 <label for="inputPassword3" class="col-sm-3 control-label">Last Name</label>
-
+                 <label for="last" class="col-sm-3 control-label">Last Name</label>
                  <div class="col-sm-8">
-                   <input type="password" class="form-control" id="inputPassword3" placeholder="Last Name">
+                   <input type="text" class="form-control" id="last" placeholder="Last Name">
                  </div>
                </div>
                <div class="form-group">
-                 <div class="col-sm-offset-3 col-sm-10">
-                   <div class="checkbox">
-                      <label>
-                        <input type="checkbox">
+                 <div class="col-sm-offset-3 col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="type"  value="Full Time">
                         Full Time
-                      </label>
-                    </div>
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="type" value="Adjunct">
+                      Adjunct
+                    </label>
+                  </div>
 
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox">
-                        Adjunct
-                      </label>
-                    </div>
+                </div>
 
                  </div>
                </div>
              </div>
              <!-- /.box-body -->
              <div class="box-footer">
-               <button type="submit" class="btn btn-info pull-center">Add professor</button>
+               <button class="btn btn-info pull-center" ng-click = "addPro()">Add professor</button>
              </div>
              <!-- /.box-footer -->
            </form>
