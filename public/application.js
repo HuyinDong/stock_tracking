@@ -4,9 +4,17 @@
 
 var mainApplicationModule = angular.module('mainApplicationModule',
     [
-
+      'home',
+      'sidenav',
+      'charts',
+      'conflicts',
+      'summary',
+      'resources'
     ]);
+
+
 
 angular.element(document).ready(function(){
    angular.bootstrap(document,['mainApplicationModule']);
+   console.log("ready");
 });
