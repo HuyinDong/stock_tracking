@@ -8,11 +8,13 @@ $results  = mysql_query($sql) or die("Query failed: " . mysql_error());
 
 
 
-$data = array();
+$professors = array();
 
  while ($row = mysql_fetch_object($results)){
-    $data[] = $row;
+    $professors[] = $row;
  }
+
+$data['data'] = $professors;
 
 echo json_encode($data);
 

@@ -1,13 +1,29 @@
-resources.controller('resourcesCtrl',function($scope,$http){
-  $http.get('./app/selectProfessor.php').then(function(data){
-      $scope.pros = data.data;
-      var table = $('#example').DataTable();
+resources.controller('resourcesCtrl',function($scope,$http,$state){
 
-      $('#example tbody').on( 'click', 'tr', function () {
-          $(this).toggleClass('selected');
-          console.log($scope.pid);
-      } );
-  });
+  $scope.deleteAvailable = false;
+  var table  = $('#example').DataTable({
+            ajax:  "./app/selectProfessor.php",
+            columns: [
+                { "data": "pid"},
+                { "data": "firstname"},
+                { "data": "lastname" },
+                { "data": "type" }
+                    ],
+                    select: {
+		                        style: 'multi'
+                          }
+          });
+          table.on( 'deselect', function ( e, dt, type, indexes ) {
+              if(table.rows( { selected: true } ).data().length == 0){
+                $scope.deleteAvailable = false;
+              }
+              console.log($scope.deleteAvailable);
+          });
+
+          table.on( 'select', function ( e, dt, type, indexes ) {
+                $scope.deleteAvailable = true;
+                console.log($scope.deleteAvailable);
+          });
 
 $scope.addPro = function(){
   var pro =  $.param({
@@ -17,7 +33,20 @@ $scope.addPro = function(){
     });
     console.log(pro);
   $http.get('./app/insertProfessor.php?'+pro).then(function(data){
-      console.log(data);
+        $state.reload();
   });
+}
+
+$scope.deletePro = function(){
+    var id = [];
+    var len = table.rows( { selected: true } ).data().length;
+    for(var i = 0; i < len; i++){
+      $http.get('./app/deleteProfessor.php?pid='+table.rows( { selected: true } ).data()[i].pid)
+        .then(function(data){
+          $state.reload();
+        });
+
+    }
+  console.log(table.rows( { selected: true } ).data());
 }
 });

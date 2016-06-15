@@ -24,28 +24,20 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body" >
-                <table id="example" class="display" cellspacing="0" width="100%"
-                    >
+                <table id="example" class="table table-bordered display">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
-                                <th>Status</th>
+                                <th>Type</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr ng-repeat="pro in pros">
-                                <th>{{pro.pid}}</th>
-                                <th>{{pro.firstname}}</th>
-                                <th>{{pro.lastname}}</th>
-                                <th>{{pro.type}}</th>
-                            </tr>
-                        </tbody>
+
                 </table>
             </div>
             <div class="box-footer">
-              <button class="btn btn-warning pull-center" ng-click = "deletePro()">Delete professor</button>
+              <button class="btn btn-warning pull-center"  ng-click = "deletePro()">Delete professor</button>
             </div>
           </div>
                  </div>
@@ -88,10 +80,10 @@
 
                  </div>
                </div>
-             </div>
+
              <!-- /.box-body -->
              <div class="box-footer">
-               <button class="btn btn-info pull-center" ng-click = "addPro()">Add professor</button>
+               <button class="btn btn-info pull-center"  ng-click = "addPro()">Add professor</button>
              </div>
              <!-- /.box-footer -->
            </form>
