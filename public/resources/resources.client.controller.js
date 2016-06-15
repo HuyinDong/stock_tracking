@@ -3,6 +3,7 @@ resources.controller('resourcesCtrl',function($scope,$http,$state){
   $scope.deleteAvailable = false;
   var table  = $('#example').DataTable({
             ajax:  "./app/selectProfessor.php",
+            bPaginate : false,
             columns: [
                 { "data": "pid"},
                 { "data": "firstname"},
