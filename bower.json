@@ -17,10 +17,10 @@
     "angular-ui-router":"~0.2.15",
     "angular-resource":"~1.2",
     "angular-material":"0.10.1",
-    "datatables":""
+    "datatables":"",
     "angular-datatables":"0.4.0",
     "font-awesome-animation":"0.0.7",
     "underscore":"1.8.3",
-
+    "bootstrap-timepicker":"0.5.2"
   }
 }
