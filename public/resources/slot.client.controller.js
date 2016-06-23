@@ -50,7 +50,7 @@ $scope.deleteSlot = function(){
   var id = [];
   var len = slot.rows( { selected: true } ).data().length;
   for(var i = 0; i < len; i++){
-    $http.get('./app/deleteSlot.php?time_id='+slot.rows( { selected: true } ).data()[i].slot_id)
+    $http.get('./app/deleteSlot.php?time_id='+slot.rows( { selected: true } ).data()[i].time_id)
       .then(function(data){
         slot.ajax.url("./app/selectSlot.php").load();
       });
