@@ -10,8 +10,7 @@ var course  = $('#courses').DataTable({
               { "data": "code" },
               { "data": "name" },
               { "data": "credits" },
-              { "data": "section_prefix" },
-              { "data": "numbers" }
+              { "data": "section_prefix" }
                   ],
                   select: {
                           style: 'multi'
