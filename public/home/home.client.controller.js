@@ -43,15 +43,17 @@ home.controller('homeCtrl',function($scope,$http){
             });
           });
       $scope.addSchedule = function(){
+
             var take = $.param({
                 slot_id : $("#slot").val(),
                 classroom_id : $("#classroom").val(),
                 pid : $("#pro").val(),
                 course_id : $("#course").val(),
             });
+            console.log(take);
             var assignedStatus =  $.param({
                   assigned : "Y",
-                    course_id : $("#course").val(),
+                  course_id : $("#course").val(),
               });
             $http.get('./app/updateAssignedStatus.php?'+assignedStatus)
                   .then(function(data){
@@ -70,11 +72,37 @@ home.controller('homeCtrl',function($scope,$http){
                 ajax:  "./app/selectTake.php",
                 bPaginate : false,
                 columns: [
-                    { "data": "name"},
-                    { "data": "prefix" },
-                    { "data": "room" },
-                    { "data": "day" },
-                    { "data": "lastname" }
+                    { "data": "name"
+                    },
+                    { "data": "prefix" ,
+                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html(oData.prefix + "-"+oData.code);
+                        }
+                    },
+                    { "data": "room" ,
+                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                          if(oData.cid == -1){
+                                  $(nTd).html("TBA");
+                              }else{
+                          $(nTd).html(oData.room);
+                        }
+                      } },
+                    { "data": "day" ,
+                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                          if(oData.sid == -1){
+                                  $(nTd).html("TBA");
+                              }else if(oData.sid == -2){
+                                    $(nTd).html("Online");
+                              }else{
+                          $(nTd).html(oData.day+" "+oData.start+"-"+oData.end);
+                        }
+                      }
+                      },
+                    { "data": "lastname",
+                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html(oData.firstname+" "+oData.lastname);
+                        }
+                    }
                         ],
                         select: {
                                 style: 'multi'
@@ -82,7 +110,7 @@ home.controller('homeCtrl',function($scope,$http){
               });
               console.log(take);
               take.on( 'deselect', function ( e, dt, type, indexes ) {
-                  if(slot.rows( { selected: true } ).data().length == 0){
+                  if(take.rows( { selected: true } ).data().length == 0){
                     $scope.deleteAvailable = false;
                   }
                   console.log($scope.deleteAvailable);
@@ -90,7 +118,7 @@ home.controller('homeCtrl',function($scope,$http){
 
               take.on( 'select', function ( e, dt, type, indexes ) {
                     $scope.deleteAvailable = true;
-                    console.log(slot.rows( { selected: true } ).data());
+                    console.log(take.rows( { selected: true } ).data());
               });
 
 });

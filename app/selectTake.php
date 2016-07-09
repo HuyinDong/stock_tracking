@@ -2,7 +2,10 @@
 
 require_once("./db.php");
 
-$sql = "SELECT * FROM `take` JOIN `professor`,`classroom`,`course`,`time_slot` where take.slot_id = time_slot.slot_id and take.pid = professor.pid and take.classroom_id = classroom.classroom_id and take.course_id = course.course_id";
+$sql = "SELECT * FROM `take` LEFT JOIN `time_slot` on
+        take.sid = time_slot.slot_id left join `classroom`
+        on take.cid = classroom.classroom_id join `course`,`professor`
+        where take.course_id = course.course_id and take.pid = professor.pid";
 
 $results  = mysql_query($sql) or die("Query failed: " . mysql_error());
 
