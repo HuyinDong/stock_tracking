@@ -16,5 +16,4 @@ var mainApplicationModule = angular.module('mainApplicationModule',
 
 angular.element(document).ready(function(){
    angular.bootstrap(document,['mainApplicationModule']);
-   console.log("ready");
 });
