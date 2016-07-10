@@ -114,6 +114,7 @@ home.controller('homeCtrl',function($scope,$http,$state){
                   .then(function(data){
                       $http.get('./app/insertTake.php?'+takeObj)
                               .then(function(data){
+                                console.log(data);
                                   $state.reload();
                               });
                   });
