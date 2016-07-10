@@ -1,6 +1,6 @@
 resources.controller('proCtrl',function($scope,$http,$state){
 
-  $scope.isNotSelected = true;
+  $scope.isNotSelected = false;
 
   var professor  = $('#professors').DataTable({
             ajax:  "./app/selectProfessor.php",
@@ -17,12 +17,12 @@ resources.controller('proCtrl',function($scope,$http,$state){
           });
           professor.on( 'deselect', function ( e, dt, type, indexes ) {
               if(professor.rows( { selected: true } ).data().length == 0){
-                changeValue();
+                //changeValue();
               }
           });
 
           professor.on( 'select', function ( e, dt, type, indexes ) {
-                changeValue();
+                //changeValue();
           });
 function changeValue(){
     if($scope.isNotSelected){
