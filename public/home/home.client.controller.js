@@ -117,9 +117,6 @@ home.controller('homeCtrl',function($scope,$http,$state){
                                   $state.reload();
                               });
                   });
-                  console.log(take);
-                  //take.ajax.url("./app/selectTake.php").load();
-
       };
 
       $(document).on('focus', '#course', getUpdatedCourses);
