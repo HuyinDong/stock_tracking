@@ -1,4 +1,4 @@
-home.controller('homeCtrl',function($scope,$http){
+home.controller('homeCtrl',function($scope,$http,$state){
 
       $scope.slots = [];
       $scope.classrooms = [];
@@ -42,83 +42,125 @@ home.controller('homeCtrl',function($scope,$http){
               });
             });
           });
+
+          var take  = $('#take').DataTable({
+                    ajax:  "./app/selectTake.php",
+                    bPaginate : false,
+                    columns: [
+                        { "data": "name"
+                        },
+                        { "data": "prefix" ,
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              $(nTd).html(oData.prefix + "-"+oData.code);
+                            }
+                        },
+                        { "data": "room" ,
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              if(oData.cid == -1){
+                                      $(nTd).html("TBA");
+                                  }else{
+                              $(nTd).html(oData.room);
+                            }
+                          } },
+                        { "data": "day" ,
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              if(oData.sid == -1){
+                                      $(nTd).html("TBA");
+                                  }else if(oData.sid == -2){
+                                        $(nTd).html("Online");
+                                  }else{
+                              $(nTd).html(oData.day+" "+oData.start+"-"+oData.end);
+                            }
+                          }
+                          },
+                        { "data": "lastname",
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              $(nTd).html(oData.firstname+" "+oData.lastname);
+                            }
+                        }
+                            ],
+                            select: {
+                                    style: 'multi'
+                                  }
+                  });
+                  take.on( 'deselect', function ( e, dt, type, indexes ) {
+                      if(take.rows( { selected: true } ).data().length == 0){
+                        $scope.deleteAvailable = false;
+                      }
+
+                  });
+
+                  take.on( 'select', function ( e, dt, type, indexes ) {
+                        $scope.deleteAvailable = true;
+
+                  });
+
+
+
       $scope.addSchedule = function(){
 
-            var take = $.param({
+            var takeObj = $.param({
                 slot_id : $("#slot").val(),
                 classroom_id : $("#classroom").val(),
                 pid : $("#pro").val(),
                 course_id : $("#course").val(),
             });
-            console.log(take);
+            console.log(takeObj);
             var assignedStatus =  $.param({
                   assigned : "Y",
                   course_id : $("#course").val(),
               });
             $http.get('./app/updateAssignedStatus.php?'+assignedStatus)
                   .then(function(data){
-                      $http.get('./app/insertTake.php?'+take)
+                      $http.get('./app/insertTake.php?'+takeObj)
                               .then(function(data){
-                                    console.log(data);
+                                  $state.reload();
                               });
                   });
-
+                  console.log(take);
+                  //take.ajax.url("./app/selectTake.php").load();
 
       };
 
+      $(document).on('focus', '#course', getUpdatedCourses);
+
+      function getUpdatedCourses(){
+        $http.get('./app/selectCourse.php').then(function(data){   //selectUnscheduledCourse.php
+              var course = data.data.data;
+              $scope.courses = [];
+              course.forEach(function(ele){
+                if(ele.assigned == "N")
+                $scope.courses.push({
+                  content : ele.prefix+ele.code+" "+ele.section_prefix+" "+ele.name,
+                  course_id : ele.course_id
+              });
+            });
+          });
+      }
 
 
-      var take  = $('#take').DataTable({
-                ajax:  "./app/selectTake.php",
-                bPaginate : false,
-                columns: [
-                    { "data": "name"
-                    },
-                    { "data": "prefix" ,
-                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
-                          $(nTd).html(oData.prefix + "-"+oData.code);
-                        }
-                    },
-                    { "data": "room" ,
-                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
-                          if(oData.cid == -1){
-                                  $(nTd).html("TBA");
-                              }else{
-                          $(nTd).html(oData.room);
-                        }
-                      } },
-                    { "data": "day" ,
-                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
-                          if(oData.sid == -1){
-                                  $(nTd).html("TBA");
-                              }else if(oData.sid == -2){
-                                    $(nTd).html("Online");
-                              }else{
-                          $(nTd).html(oData.day+" "+oData.start+"-"+oData.end);
-                        }
-                      }
-                      },
-                    { "data": "lastname",
-                    "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
-                          $(nTd).html(oData.firstname+" "+oData.lastname);
-                        }
-                    }
-                        ],
-                        select: {
-                                style: 'multi'
-                              }
-              });
-              console.log(take);
-              take.on( 'deselect', function ( e, dt, type, indexes ) {
-                  if(take.rows( { selected: true } ).data().length == 0){
-                    $scope.deleteAvailable = false;
-                  }
-                  console.log($scope.deleteAvailable);
-              });
+      $scope.deleteSchedule = function(){
+        var len = take.rows( { selected: true } ).data().length;
 
-              take.on( 'select', function ( e, dt, type, indexes ) {
-                    $scope.deleteAvailable = true;
-                    console.log(take.rows( { selected: true } ).data());
-              });
+        for(var i = 0; i < len; i++){
+            var obj = take.rows( { selected: true } ).data()[i];
+            console.log(obj.course_id);
+          $http.get('./app/deleteTake.php?id='+obj.id)
+            .then(function(data){
+              var assignedStatus =  $.param({
+                    assigned : "N",
+                    course_id : obj.course_id
+                });
+              $http.get('./app/updateAssignedStatus.php?'+assignedStatus)
+                    .then(function(data){
+                      //  take.ajax.url("./app/selectTake.php").load();
+                        $state.reload();
+                    });
+
+            });
+        }
+      }
+
+
 
 });
