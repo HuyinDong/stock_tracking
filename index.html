@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin | Data Tables</title>
+    <title>Course schedule table</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="./public/lib/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <!-- DataTables -->
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./public/lib/datatables/media/css/dataTables.jqueryui.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="./public/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="./public/lib/angular-material/angular-material.css">
     <link rel="stylesheet" href="./public/lib/Select-1.2.0/css/select.dataTables.css">
     <link rel="stylesheet" href="./public/lib/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="./public/lib/fullcalendar/dist/fullcalendar.css">
     <link rel="stylesheet" href="./public/css/styles.css">
 
 </head>
@@ -50,7 +51,8 @@
     <script src="./public/lib/angular-datatables/dist/angular-datatables.min.js"></script>
     <script src="./public/lib/Select-1.2.0/js/dataTables.select.min.js"></script>
     <script src="./public/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-      
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js'></script>
+    <script src="./public/lib/fullcalendar/dist/fullcalendar.min.js"></script>
 
     <script src="./public/js/app.min.js"></script>
     <script src="./public/js/demo.js"></script>
@@ -62,6 +64,7 @@
     <script src="./public/sidenav/sidenav.client.module.js"></script>
     <script src="./public/sidenav/sidenav.client.controller.js"></script>
     <script src="./public/charts/charts.client.module.js"></script>
+    <script src="./public/charts/charts.client.controller.js"></script>
     <script src="./public/conflicts/conflicts.client.module.js"></script>
     <script src="./public/summary/summary.client.module.js"></script>
     <script src="./public/summary/summary.client.controller.js"></script>

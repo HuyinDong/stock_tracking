@@ -21,6 +21,7 @@
     "angular-datatables":"0.4.0",
     "font-awesome-animation":"0.0.7",
     "underscore":"1.8.3",
-    "bootstrap-timepicker":"0.5.2"
+    "bootstrap-timepicker":"0.5.2",
+    "fullcalendar":"2.8.0"
   }
 }
