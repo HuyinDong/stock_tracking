@@ -48,9 +48,11 @@
             </label>
           </div>
           <div class="form-group">
-                  <select class="form-control select2" id = "cr" disabled>
-                    <option selected="selected" value = "-1">TBA</option>
+                  <select class="form-control select2" id = "cr">
+                    <option value = "-1">CLASSROOM</option>
+                    <option value = "-1">TBA</option>
                     <option value = "-2">Online</option>
+                    <option ng-repeat="cr in classrooms" value = "{{cr.cid}}">{{cr.room}}</option>
                   </select>
           </div>
         </div>

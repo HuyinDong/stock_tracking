@@ -1,8 +1,8 @@
 
 charts.controller('chartsCtrl',function($scope,$http){
 
-
   $scope.professors = [];
+  $scope.classrooms = [];
 
   $http.get('./app/selectProfessor.php').then(function(data){
         var pro = data.data.data;
@@ -13,6 +13,17 @@ charts.controller('chartsCtrl',function($scope,$http){
         });
       });
     });
+
+  $http.get('./app/selectClassroom.php').then(function(data){
+          var crs = data.data.data;
+          crs.forEach(function(ele){
+            $scope.classrooms.push({
+              room : ele.room,
+              cid : ele.classroom_id
+          });
+        });
+      });
+
       var events = [];
       $('#calendar').fullCalendar({
         header: {
@@ -30,27 +41,34 @@ charts.controller('chartsCtrl',function($scope,$http){
         events: events
       });
 
-  $(document).on('change', '#prof', getScheduleForProfessor);
+  $( "#cr" ).prop( "disabled", true );
+  $(document).on('change', '#prof', getSchedule);
+  $(document).on('change', '#cr', getSchedule);
+  $(document).on('change','input[type=radio][name=type]',function(e){
+      if(this.value == 'professor'){
+        $( "#cr" ).prop( "disabled", true );
+        $( "#prof" ).prop( "disabled", false );
+      }else if(this.value == 'classroom'){
+        $( "#prof" ).prop( "disabled", true );
+        $( "#cr" ).prop( "disabled", false );
+      }
+  });
 
-
-function getScheduleForProfessor(){
-
+function getSchedule(){
   $http.get("./app/selectTake.php")
         .then(function(data){
-            console.log();
+
             var arr = data.data.data;
+            console.log(arr);
               var online = [];
               events = [];
               for(var i = 0; i < arr.length; i++){
-                if(arr[i].start){
+                  if(arr[i].day){
                     var day = arr[i].day.split(",");
-
                     var startTime = arr[i].start.split(" ");
                     var endTime = arr[i].end.split(" ");
-
                     var startHour = startTime[0].split(":");
                     var endHour = endTime[0].split(":");
-
                     if(startTime[1] == "PM"){
                       startHour[0] = parseInt(startHour[0])+12;
                       endHour[0] = parseInt(endHour[0])+12;
@@ -76,22 +94,33 @@ function getScheduleForProfessor(){
                       sDate = "2016-06-17T"+st;
                       eDate = "2016-06-17T"+en;
                     }
-                  if(arr[i].pid == $("#prof").val()){
-                  events.push({
-                      title : arr[i].name,
-                      start : sDate,
-                      end : eDate
-                    });
-
+                    if($('input[name=type]:checked').val() == 'professor'){
+                      if(arr[i].pid == $("#prof").val()){
+                      events.push({
+                          title : arr[i].name,
+                          start : sDate,
+                          end : eDate
+                        });
+                      }
+                    }else if($('input[name=type]:checked').val() == 'classroom'){
+                      console.log(arr[i].cid);
+                      if(arr[i].cid == $("#cr").val()){
+                      events.push({
+                          title : arr[i].name,
+                          start : sDate,
+                          end : eDate
+                        });
+                      }
+                    }
                     console.log(events);
-                  }
-                  }
                 }
               }
+              }
               $('#calendar').fullCalendar('removeEvents');
-          $('#calendar').fullCalendar('addEventSource', events);
-          $('#calendar').fullCalendar('rerenderEvents' );
+              $('#calendar').fullCalendar('addEventSource', events);
+              $('#calendar').fullCalendar('rerenderEvents' );
         });
         }
+
 
 });
