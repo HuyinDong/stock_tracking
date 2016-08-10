@@ -3,8 +3,9 @@ conflicts.controller('conflictsCtrl',function($scope,$http){
       $scope.color = [" "," box-info"," box-warning"," box-primary"," box-success"," box-danger"," "," "];
       $scope.conflicts = [];
 
+
       $scope.getRandomSpan = function(){
-          return Math.floor((Math.random()*5)+1);
+        return Math.floor((Math.random()*5));
       }
 
       $http.get("./app/selectTake.php")

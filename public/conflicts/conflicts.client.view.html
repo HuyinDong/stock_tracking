@@ -8,16 +8,16 @@
       <div class="col-md-12">
         <div class="row" ng-controller = "conflictsCtrl">
             <div class="col-md-12">
-              <div class="box {{color[getRandomSpan()]}}" ng-repeat = "con in conflicts">
+              <div  ng-init="foo=getRandomSpan()" class="box {{color[foo]}}" ng-repeat = "con in conflicts">
           <div class="box-header with-border">
           <h5 class="box-title">Conflicts: {{con.reason}}</h5>
           </div>
           <!-- /.box-header -->
           <div class="box-body" >
-            <p>{{con.courseOne.prefix}}{{con.courseOne.code}}              {{con.courseOne.prefix.section+prefix}}                       {{con.courseOne.name}}
-                {{con.courseOne.d}}   {{con.courseOne.start}}-{{con.courseOne.end}}                             {{con.courseOne.firstname}} {{con.courseOne.lastname}}</p>
-            <p>{{con.courseTwo.prefix}}{{con.courseTwo.code}}              {{con.courseTwo.prefix.section+prefix}}                       {{con.courseTwo.name}}
-                {{con.courseTwo.d}}   {{con.courseTwo.start}}-{{con.courseTwo.end}}                             {{con.courseTwo.firstname}} {{con.courseTwo.lastname}}</p>
+            <p>{{con.courseOne.prefix}}{{con.courseOne.code}}&nbsp{{con.courseOne.prefix.section+prefix}}&nbsp&nbsp&nbsp{{con.courseOne.name}}
+                &nbsp&nbsp&nbsp{{con.courseOne.d}}   {{con.courseOne.start}}-{{con.courseOne.end}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{con.courseOne.firstname}}&nbsp{{con.courseOne.lastname}}</p>
+            <p>{{con.courseTwo.prefix}}{{con.courseTwo.code}}&nbsp{{con.courseTwo.prefix.section+prefix}}&nbsp&nbsp&nbsp{{con.courseTwo.name}}
+                &nbsp&nbsp&nbsp{{con.courseTwo.d}}   {{con.courseTwo.start}}-{{con.courseTwo.end}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{con.courseTwo.firstname}} {{con.courseTwo.lastname}}</p>
           </div>
           </div>
 
