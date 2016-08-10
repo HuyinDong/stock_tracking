@@ -59,7 +59,7 @@ function getSchedule(){
         .then(function(data){
 
             var arr = data.data.data;
-            console.log(arr);
+
               var online = [];
               events = [];
               for(var i = 0; i < arr.length; i++){
@@ -112,7 +112,7 @@ function getSchedule(){
                         });
                       }
                     }
-                    console.log(events);
+                    
                 }
               }
               }

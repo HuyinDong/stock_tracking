@@ -1,1 +1,30 @@
-conflicts
+<section class="content-header">
+     <h1>
+       Summary of Conflicts
+     </h1>
+</section>
+<section class="content"  ng-app="conflicts">
+    <div class="row" >
+      <div class="col-md-12">
+        <div class="row" ng-controller = "conflictsCtrl">
+            <div class="col-md-12">
+              <div class="box {{color[getRandomSpan()]}}" ng-repeat = "con in conflicts">
+          <div class="box-header with-border">
+          <h5 class="box-title">Conflicts: {{con.reason}}</h5>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body" >
+            <p>{{con.courseOne.prefix}}{{con.courseOne.code}}              {{con.courseOne.prefix.section+prefix}}                       {{con.courseOne.name}}
+                {{con.courseOne.d}}   {{con.courseOne.start}}-{{con.courseOne.end}}                             {{con.courseOne.firstname}} {{con.courseOne.lastname}}</p>
+            <p>{{con.courseTwo.prefix}}{{con.courseTwo.code}}              {{con.courseTwo.prefix.section+prefix}}                       {{con.courseTwo.name}}
+                {{con.courseTwo.d}}   {{con.courseTwo.start}}-{{con.courseTwo.end}}                             {{con.courseTwo.firstname}} {{con.courseTwo.lastname}}</p>
+          </div>
+          </div>
+
+            </div>
+        </div>
+
+        <!-- nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+</section>
