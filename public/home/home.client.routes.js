@@ -1,10 +1,10 @@
       home.config(['$stateProvider', '$urlRouterProvider',
           function($stateProvider, $urlRouterProvider) {
-              $urlRouterProvider.otherwise('/');
+              $urlRouterProvider.otherwise('/home');
               // Application routes
               $stateProvider
                   .state('home',{
-                      url : '/',
+                      url : '/home',
                       templateUrl :'./public/home/home.client.view.html'
                   })
                   .state('charts',{
