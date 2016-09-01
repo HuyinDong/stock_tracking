@@ -1,3 +1,11 @@
+
+<style type="text/css">
+@media print
+{
+body * { visibility: hidden; }
+.print * { visibility: visible; }
+}
+</style>
 <section class="content-header">
      <h1>
        Summary of Conflicts
@@ -7,7 +15,7 @@
     <div class="row" >
       <div class="col-md-12">
         <div class="row" ng-controller = "conflictsCtrl">
-            <div class="col-md-12">
+            <div class="col-md-12 print">
               <div  ng-init="foo=getRandomSpan()" class="box {{color[foo]}}" ng-repeat = "con in conflicts">
           <div class="box-header with-border">
           <h5 class="box-title">Conflicts: {{con.reason}}</h5>
@@ -21,6 +29,10 @@
           </div>
           </div>
 
+            </div>
+
+            <div class="box-footer">
+            <button class="btn btn-primary pull-center"  ng-click = "printConflicts()">Print Conflicts</button>
             </div>
         </div>
 

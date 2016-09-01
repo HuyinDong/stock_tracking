@@ -3,6 +3,10 @@ conflicts.controller('conflictsCtrl',function($scope,$http){
       $scope.color = [" "," box-info"," box-warning"," box-primary"," box-success"," box-danger"," "," "];
       $scope.conflicts = [];
 
+      $scope.printConflicts = function(){
+
+          window.print();
+      };
 
       $scope.getRandomSpan = function(){
         return Math.floor((Math.random()*5));
@@ -63,7 +67,7 @@ conflicts.controller('conflictsCtrl',function($scope,$http){
                         }
                     }
                   }
-                  console.log($scope.conflicts);
+
               });
 
 
@@ -92,4 +96,6 @@ conflicts.controller('conflictsCtrl',function($scope,$http){
                     return false;
                   }
               }
+
+
 });
