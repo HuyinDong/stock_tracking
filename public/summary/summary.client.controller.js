@@ -7,6 +7,9 @@ summary.controller('summaryCtrl',function($scope,$http){
       var adj_section = 0;
       var adj_credits = 0;
 
+      $scope.printSummary = function(){
+          window.print();
+      };
 
       $http.get("app/selectTake.php").then(function(data){
 

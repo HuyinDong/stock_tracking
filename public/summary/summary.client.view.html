@@ -1,12 +1,23 @@
+
+<style type="text/css">
+@media print
+{
+body * { visibility: hidden; }
+.print * { visibility: visible; }
+.print { position: absolute; top: 40px; left: -240px; }
+}
+
+
+</style>
 <section class="content-header">
      <h1>
        Summary of Schedule
      </h1>
 </section>
-<section class="content"  ng-app="summary">
+<section class="content pull-center" ng-app="summary" ng-controller = "summaryCtrl">
     <div class="row" >
       <div class="col-md-12">
-        <div class="row" ng-controller = "summaryCtrl">
+        <div class="row print" >
             <div class="col-md-12">
                 <ul>
                   <li><h4>Sections: {{sections}}</h4></li>
@@ -24,13 +35,12 @@
          <table id="full" class="table table-bordered display">
                  <thead>
                      <tr>
-                         <th>Name</th>
-                         <th>Sections</th>
-                         <th>Credit Hours</th>
+                         <th >Name</th>
+                         <th >Sections</th>
+                         <th >Credit Hours</th>
                      </tr>
                  </thead>
          </table>
-
         </div>
         <div class="box-footer">
           <p>Full Time percentage of all sections: {{per_full_section}}%</p>
@@ -50,7 +60,7 @@
                    <tr>
                        <th>Name</th>
                        <th>Sections</th>
-                       <th>Credit Hours</th>
+                       <th >Credit Hours</th>
                    </tr>
                  </thead>
          </table>
@@ -61,8 +71,12 @@
         </div>
         </div>
           </div>
-        </div>
 
+
+        </div>
+        <div class="col-md-12">
+          <button class="btn btn-primary pull-center"  ng-click = "printSummary()">Print Summary</button>
+        </div>
         <!-- nav-tabs-custom -->
       </div>
       <!-- /.col -->

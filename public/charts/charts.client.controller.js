@@ -4,6 +4,10 @@ charts.controller('chartsCtrl',function($scope,$http){
   $scope.professors = [];
   $scope.classrooms = [];
 
+  $scope.printSchedule = function(){
+      window.print();
+  };
+
   $http.get('./app/selectProfessor.php').then(function(data){
         var pro = data.data.data;
         pro.forEach(function(ele){
@@ -112,7 +116,7 @@ function getSchedule(){
                         });
                       }
                     }
-                    
+
                 }
               }
               }
