@@ -13,6 +13,7 @@ if($type == 'professor'){
 }else if($type == 'classroom'){
   $cid = $_GET['q'];
   $sql = "DELETE FROM `take` WHERE cid = $cid";
+  echo "classroom deleted take";
   mysql_query($sql) or die("Query failed: " . mysql_error());
 }else if($type == 'course'){
   $course_id = $_GET['q'];

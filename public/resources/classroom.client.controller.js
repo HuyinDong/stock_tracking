@@ -44,7 +44,14 @@ $scope.deleteClassroom = function(){
   for(var i = 0; i < len; i++){
     $http.get('./app/deleteClassroom.php?classroom_id='+classroom.rows( { selected: true } ).data()[i].classroom_id)
       .then(function(data){
-        classroom.ajax.url("./app/selectClassroom.php").load();
+        console.log(data);
+        var cid = parseInt(data.data);
+        console.log("cid",cid);
+        $http.get('./app/deleteTakeByPCT.php?type=classroom&q='+cid)
+          .then(function(data){
+            console.log(data);
+                classroom.ajax.url("./app/selectClassroom.php").load();
+          });
       });
   }
 }
