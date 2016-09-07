@@ -47,12 +47,22 @@ $scope.deletePro = function(){
 
     var id = [];
     var len = professor.rows( { selected: true } ).data().length;
+    var pro = professor.rows( { selected: true } ).data();
+    console.log(pro);
     for(var i = 0; i < len; i++){
-      $http.get('./app/deleteProfessor.php?pid='+professor.rows( { selected: true } ).data()[i].pid)
+      $http.get('./app/deleteProfessor.php?pid='+pro[i].pid)
         .then(function(data){
-          professor.ajax.url("./app/selectProfessor.php").load();
+          var pid = parseInt(data.data);
+          $http.get('./app/deleteTakeByPCT.php?type=professor&q='+pid)
+            .then(function(data){
+              var assignedStatus =  $.param({
+                    assigned : "N",
+                    course_id : $("#course").val(),
+                });
+                $http.get('./app/updateAssignedStatus.php?')
+                  professor.ajax.url("./app/selectProfessor.php").load();
+            });
         });
-
     }
 }
 });

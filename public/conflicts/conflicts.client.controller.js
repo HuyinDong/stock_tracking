@@ -4,7 +4,6 @@ conflicts.controller('conflictsCtrl',function($scope,$http){
       $scope.conflicts = [];
 
       $scope.printConflicts = function(){
-
           window.print();
       };
 
