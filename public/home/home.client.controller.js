@@ -53,6 +53,11 @@ home.controller('homeCtrl',function($scope,$http,$state){
                               $(nTd).html(oData.prefix + "-"+oData.code);
                             }
                         },
+                        { "data": "section_prefix" ,
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              $(nTd).html(oData.section_prefix);
+                            }
+                        },
                         { "data": "room" ,
                         "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
                               if(oData.cid == -1){
