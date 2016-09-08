@@ -32,10 +32,9 @@ home.controller('homeCtrl',function($scope,$http,$state){
             });
           });
         });
-        $http.get('./app/selectCourse.php').then(function(data){   //selectUnscheduledCourse.php
+        $http.get('./app/selectCoursesNotAssigned.php').then(function(data){   //selectUnscheduledCourse.php
               var course = data.data.data;
               course.forEach(function(ele){
-                if(ele.assigned == "N")
                 $scope.courses.push({
                   content : ele.prefix+ele.code+" "+ele.section_prefix+" "+ele.name,
                   course_id : ele.course_id
@@ -52,6 +51,11 @@ home.controller('homeCtrl',function($scope,$http,$state){
                         { "data": "prefix" ,
                         "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
                               $(nTd).html(oData.prefix + "-"+oData.code);
+                            }
+                        },
+                        { "data": "section_prefix" ,
+                        "fnCreatedCell":function (nTd, sData, oData, iRow, iCol) {
+                              $(nTd).html(oData.section_prefix);
                             }
                         },
                         { "data": "room" ,
@@ -98,36 +102,26 @@ home.controller('homeCtrl',function($scope,$http,$state){
 
 
       $scope.addSchedule = function(){
-
             var takeObj = $.param({
                 slot_id : $("#slot").val(),
                 classroom_id : $("#classroom").val(),
                 pid : $("#pro").val(),
                 course_id : $("#course").val(),
             });
-            console.log(takeObj);
-            var assignedStatus =  $.param({
-                  assigned : "Y",
-                  course_id : $("#course").val(),
-              });
-            $http.get('./app/updateAssignedStatus.php?'+assignedStatus)
-                  .then(function(data){
-                      $http.get('./app/insertTake.php?'+takeObj)
-                              .then(function(data){
-                                console.log(data);
-                                  $state.reload();
-                              });
-                  });
+            $http.get('./app/insertTake.php?'+takeObj)
+                    .then(function(data){
+                      console.log(data);
+                    });
+                  $state.reload();
       };
 
       $(document).on('focus', '#course', getUpdatedCourses);
 
       function getUpdatedCourses(){
-        $http.get('./app/selectCourse.php').then(function(data){   //selectUnscheduledCourse.php
+        $http.get('./app/selectCoursesNotAssigned.php').then(function(data){   //selectUnscheduledCourse.php
               var course = data.data.data;
               $scope.courses = [];
               course.forEach(function(ele){
-                if(ele.assigned == "N")
                 $scope.courses.push({
                   content : ele.prefix+ele.code+" "+ele.section_prefix+" "+ele.name,
                   course_id : ele.course_id
@@ -145,16 +139,7 @@ home.controller('homeCtrl',function($scope,$http,$state){
             console.log(obj.course_id);
           $http.get('./app/deleteTake.php?id='+obj.id)
             .then(function(data){
-              var assignedStatus =  $.param({
-                    assigned : "N",
-                    course_id : obj.course_id
-                });
-              $http.get('./app/updateAssignedStatus.php?'+assignedStatus)
-                    .then(function(data){
-                      //  take.ajax.url("./app/selectTake.php").load();
-                        $state.reload();
-                    });
-
+                    $state.reload();
             });
         }
       }

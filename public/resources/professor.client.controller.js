@@ -47,12 +47,17 @@ $scope.deletePro = function(){
 
     var id = [];
     var len = professor.rows( { selected: true } ).data().length;
-    for(var i = 0; i < len; i++){
-      $http.get('./app/deleteProfessor.php?pid='+professor.rows( { selected: true } ).data()[i].pid)
-        .then(function(data){
-          professor.ajax.url("./app/selectProfessor.php").load();
-        });
+    var pro = professor.rows( { selected: true } ).data();
 
+    for(var i = 0; i < len; i++){
+      $http.get('./app/deleteProfessor.php?pid='+pro[i].pid)
+        .then(function(data){
+          var pid = parseInt(data.data);
+          $http.get('./app/deleteTakeByPCT.php?type=professor&q='+pid)
+            .then(function(data){
+                  professor.ajax.url("./app/selectProfessor.php").load();
+            });
+        });
     }
 }
 });

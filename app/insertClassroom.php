@@ -12,6 +12,4 @@ $sql = "INSERT INTO `classroom`(`building`, `room`, `capacity`) VALUES ($para)";
 
 $vul_results  = mysql_query($sql) or die("Query failed: " . mysql_error());
 
-echo 
-
 ?>

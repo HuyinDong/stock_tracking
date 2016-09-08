@@ -49,7 +49,12 @@ $scope.deleteCourse = function(){
   for(var i = 0; i < len; i++){
     $http.get('./app/deleteCourse.php?course_id='+course.rows( { selected: true } ).data()[i].course_id)
       .then(function(data){
-        course.ajax.url("./app/selectCourse.php").load();
+        var course_id = parseInt(data.data);
+        $http.get('./app/deleteTakeByPCT.php?type=course&q='+course_id)
+          .then(function(data){
+                course.ajax.url("./app/selectCourse.php").load();
+          });
+
       });
   }
 }
