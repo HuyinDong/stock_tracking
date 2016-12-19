@@ -5,11 +5,7 @@
 var mainApplicationModule = angular.module('mainApplicationModule',
     [
       'home',
-      'sidenav',
-      'charts',
-      'conflicts',
-      'summary',
-      'resources'
+      'sidenav'
     ]);
 
 

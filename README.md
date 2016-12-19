@@ -1,3 +1,3 @@
-#Master project
+# stock_tracking
 
-PHP + angularJS
+update the data every working day and save the data in db
