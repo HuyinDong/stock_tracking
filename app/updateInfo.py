@@ -3,7 +3,7 @@ import requests
 import time
 
 #database connection
-connection = mysql.connect(host='localhost',user='root', passwd='1986070@Dong',db='SSTD',charset='utf8')
+connection = mysql.connect(host='localhost',user='root', passwd='@llW1nW1n',db='SSTD',charset='utf8')
 cursor = connection.cursor()
 
 # sql
@@ -46,7 +46,7 @@ try:
                 cursor.execute(count)
                 num = cursor.fetchone()
 
-                if num[0] >= 2:
+                if num[0] > 5 :
                     print "good"
                     try:
 
