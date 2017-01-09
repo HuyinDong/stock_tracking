@@ -1,5 +1,5 @@
 {
-  "name": "Dong",
+  "name": "dong",
   "version": "0.0.1",
   "authors": [
     "Huyin"
@@ -15,14 +15,11 @@
     "angular":"~1.4.5",
     "angular-animate":"~1.4.5",
     "angular-ui-router":"~0.2.15",
-    "angular-resource":"~1.2",
-    "angular-material":"0.10.1",
-    "datatables":"",
     "angular-datatables":"0.4.0",
     "font-awesome-animation":"0.0.7",
     "underscore":"1.8.3",
-    "bootstrap-timepicker":"0.5.2",
-    "fullcalendar":"2.8.0",
-    "datatables.net-select":"1.2.0"
+    "datatables.net-select":"1.2.0",
+    "qtip2":"2.1",
+    "highcharts":"5.0.6"
   }
 }

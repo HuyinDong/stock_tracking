@@ -18,7 +18,7 @@ try:
     content =  json.loads(resp.read())
 
     data = content["retData"]["stockinfo"][0]
-
+    print data
     sh["open"]=float(data["OpenningPrice"])
     sh["close"]=float(data["currentPrice"])
     sh["high"]=float(data["hPrice"])
