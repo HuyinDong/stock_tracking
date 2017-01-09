@@ -153,11 +153,12 @@ function newPopup(url) {
           });
 
       var dataset = _.map(data,function(arr,index){
+        
             return {
-              id : arr[index].ID,
-              code : arr[index].Code,
-              name : arr[index].Name,
-              date : arr[index].Enter_Date,
+              id : arr[0].ID,
+              code : arr[0].Code,
+              name : arr[0].Name,
+              date : arr[0].Enter_Date,
               origin : arr,
               open : getOpen(arr),
               close : getClose(arr),
