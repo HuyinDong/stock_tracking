@@ -35,6 +35,15 @@
         .myCustomClass .qtip-content {
             font-size: 12px;
         }
+
+        .qtip-wiki {
+            padding: 50px;
+            max-width: 385px;
+        }
+
+        .qtip-wiki p {
+            margin: 0 0 6px;
+        }
     </style>
 </head>
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
@@ -174,7 +183,7 @@
                         var table = $('#example').DataTable({
                             data: dataset,
                             //bPaginate: false,
-                            fixedColumns: true,
+
                             order: [
                                 [2, "desc"]
                             ],
@@ -211,37 +220,83 @@
                                     "data": "o_c",
                                     "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
 
-                                        var da = [];
-                                        var ohlc = [];
-                                        for (var i = 0; i < oData.origin.length; i += 1) {
-                                            da.push(oData.origin[i].After_Date);
-                                            ohlc.push([
 
-                                                parseFloat(oData.origin[i].Open), // open
-                                                parseFloat(oData.origin[i].High), // high
-                                                parseFloat(oData.origin[i].Low), // low
-                                                parseFloat(oData.origin[i].Close) // close
-                                            ]);
+                                        var ohlc = [];
+                                        var groupingUnits = [
+                                            [
+                                                'week', // unit name
+                                                [1] // allowed multiples
+                                            ],
+                                            [
+                                                'month', [1, 2, 3, 4, 6]
+                                            ]
+                                        ];
+                                        for (var i = 0; i < oData.origin.length; i += 1) {
+                                            var da = oData.origin[i].After_Date + "T00:00:00+0000";
+                                            var myDate = new Date(da).getTime();
+                                            var color = "";
+                                            if (oData.origin[i].Open < oData.origin[i].Close) {
+                                                color = "#FF0000";
+                                            } else if (oData.origin[i].Open == oData.origin[i].Close) {
+                                                color = "#000000";
+                                            } else {
+                                                color = "#00FF00";
+                                            }
+                                            ohlc.push({
+                                                x: myDate,
+                                                open: parseFloat(oData.origin[i].Open), // open
+                                                high: parseFloat(oData.origin[i].High), // high
+                                                low: parseFloat(oData.origin[i].Low), // low
+                                                close: parseFloat(oData.origin[i].Close), // close
+                                                color: color
+                                            });
 
                                         }
+
                                         $(nTd).qtip({ // Grab some elements to apply the tooltip to
+
                                             style: {
                                                 classes: 'myCustomClass'
-
                                             },
+                                            position: {
+                                                adjust: {
+                                                    x: -30,
+                                                    y: -30
+                                                }
+                                            },
+                                            hide: {
+                                                fixed: true,
+                                                delay: 300
+                                            },
+
+
                                             content: {
                                                 text: function(event, api) {
                                                     Highcharts.stockChart('qtip-' + iRow, {
                                                         title: {
                                                             text: oData.code + "  " + oData.name
                                                         },
-
+                                                        exporting: {
+                                                            enabled: false
+                                                        },
                                                         xAxis: {
-                                                            tickPositions: ["day1", "day2", "day2", "day2", "day2", "day2"]
+                                                            tickPixelInterval: 100
                                                         },
                                                         rangeSelector: {
                                                             enabled: false
                                                         },
+                                                        navigator: {
+                                                            enabled: false
+                                                        },
+                                                        scrollbar: {
+                                                            enabled: false
+                                                        },
+                                                        /*tooltip: {
+                                                            formatter: function() {
+                                                                console.log(this.points[0].point);
+                                                                return "<h6>" + this.x + "</h6>";
+                                                            }
+                                                        },*/
                                                         series: [{
                                                             type: 'candlestick',
                                                             name: oData.name,
