@@ -87,20 +87,38 @@
             <div class="container" ng-app='stock' ng-controller='stockCtrl'>
                 <!-- Content Header (Page header) -->
                 <section class="content">
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Ongoing</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table id="ongoing" class="table table-bordered display">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Enter Date</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
 
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title" id="cveTotal"></h3>
+                                    <h3 class="box-title">History</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
                                     <table id="example" class="table table-bordered display">
                                         <thead>
                                             <tr>
-
                                                 <th>Code</th>
                                                 <th>Name</th>
                                                 <th>Date</th>
@@ -119,274 +137,384 @@
                             </div>
 
 
-
                         </div>
 
                         <!-- /.container -->
                     </div>
                     <!-- /.content-wrapper -->
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Statistic</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table table-bordered display">
+                                        <tr>
+                                            <td>Total : {{statistic.total}}</td>
+                                            <td>Red : {{statistic.countO_H.Red}}, Green : {{statistic.countO_H.Green}}, Open to High Earning Rate : {{statistic.countO_H.Red/(statistic.countO_H.Red+statistic.countO_H.Green)* 100 | number:2}}%</td>
+                                            <td>Red : {{statistic.countO_C.Red}}, Green : {{statistic.countO_C.Green}}, Open to Close Earning Rate : {{statistic.countO_C.Red/(statistic.countO_C.Red+statistic.countO_C.Green)* 100 | number:2}}%</td>
+                                        </tr>
+                                    </table>
+                                    <table id="statistic" class="table table-bordered display">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Names</th>
+                                                <th>Open to High Earning Rate</th>
+                                                <th>Open to Close Earning Rate</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                 </section>
 
-            </div>
+                </div>
 
 
-            <!-- jQuery 2.1.4 -->
-            <script src="./public/lib/jquery/dist/jquery.min.js"></script>
-            <!-- Bootstrap 3.3.5 -->
-            <script src="./public/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-            <script src="./public/lib/angular/angular.min.js"></script>
-            <script src="./public/lib/angular-animate/angular-animate.min.js"></script>
+                <!-- jQuery 2.1.4 -->
+                <script src="./public/lib/jquery/dist/jquery.min.js"></script>
+                <!-- Bootstrap 3.3.5 -->
+                <script src="./public/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+                <script src="./public/lib/angular/angular.min.js"></script>
+                <script src="./public/lib/angular-animate/angular-animate.min.js"></script>
+                <script src="./public/lib/angular-ui-router/release/angular-ui-router.js"></script>
+                <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+                <script src="./public/lib/angular-datatables/dist/angular-datatables.min.js"></script>
+                <script src="./public/lib/datatables.net-select/js/dataTables.select.min.js"></script>
+                <script src="./public/lib/underscore/underscore-min.js"></script>
+                <script src="./public/lib/qtip2/jquery.qtip.js"></script>
+                <script src="./public/lib/highcharts/highstock.js"></script>
+                <script src="./public/lib/highcharts//js/modules/exporting.js"></script>
+                <!-- AdminLTE App -->
+                <script src="./public/js/app.min.js"></script>
+                <!-- AdminLTE for demo purposes -->
+                <script src="./public/js/demo.js"></script>
 
-            <script src="./public/lib/angular-ui-router/release/angular-ui-router.js"></script>
-
-            <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-            <script src="./public/lib/angular-datatables/dist/angular-datatables.min.js"></script>
-            <script src="./public/lib/datatables.net-select/js/dataTables.select.min.js"></script>
-            <script src="./public/lib/underscore/underscore-min.js"></script>
-            <script src="./public/lib/qtip2/jquery.qtip.js"></script>
-            <script src="./public/lib/highcharts/highstock.js"></script>
-            <script src="./public/lib/highcharts//js/modules/exporting.js"></script>
-            <!-- AdminLTE App -->
-            <script src="./public/js/app.min.js"></script>
-            <!-- AdminLTE for demo purposes -->
-            <script src="./public/js/demo.js"></script>
-
-            <script>
-                var stock = angular.module('stock', []);
-                stock.controller('stockCtrl', function($scope, $http) {
-                    $http.get('./back/selectStocks.php').then(function(data) {
-                        var data = data.data.data;
-
-                        data = _.groupBy(data, 'ID');
-                        data = _.map(data, function(arr, index) {
-                            return [arr][0];
-                        });
-
-                        var dataset = _.map(data, function(arr, index) {
-
-                            return {
-                                id: arr[0].ID,
-                                code: arr[0].Code,
-                                name: arr[0].Name,
-                                date: arr[0].Enter_Date,
-                                origin: arr,
-                                open: getOpen(arr),
-                                close: getClose(arr),
-                                hh: getHHigh(arr),
-                                ll: getLLow(arr),
-                                o_hh: ((getHHigh(arr) - getOpen(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
-                                o_c: ((getClose(arr) - getOpen(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
-                                ll_hh: ((getHHigh(arr) - getLLow(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
-                            };
-                        });
-                        console.log(dataset);
-                        var table = $('#example').DataTable({
-                            data: dataset,
-                            //bPaginate: false,
-
-                            order: [
-                                [2, "desc"]
-                            ],
-                            "pagingType": "full_numbers",
-                            columns: [
-
-                                {
-                                    "data": "code"
-                                },
-                                {
-                                    "data": "name",
-                                    "width": "8%"
-                                },
-                                {
-                                    "data": "date",
-                                    "width": "10%"
-                                },
-                                {
-                                    "data": "open"
-                                },
-                                {
-                                    "data": "close"
-                                },
-                                {
-                                    "data": "hh"
-                                },
-                                {
-                                    "data": "ll"
-                                },
-                                {
-                                    "data": "o_hh"
-                                },
-                                {
-                                    "data": "o_c",
-                                    "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-
-
-                                        var ohlc = [];
-                                        var groupingUnits = [
-                                            [
-                                                'week', // unit name
-                                                [1] // allowed multiples
-                                            ],
-                                            [
-                                                'month', [1, 2, 3, 4, 6]
-                                            ]
-                                        ];
-                                        for (var i = 0; i < oData.origin.length; i += 1) {
-                                            var da = oData.origin[i].After_Date + "T00:00:00+0000";
-                                            var myDate = new Date(da).getTime();
-                                            var color = "";
-                                            if (oData.origin[i].Open < oData.origin[i].Close) {
-                                                color = "#FF0000";
-                                            } else if (oData.origin[i].Open == oData.origin[i].Close) {
-                                                color = "#000000";
-                                            } else {
-                                                color = "#00FF00";
-                                            }
-                                            ohlc.push({
-                                                x: myDate,
-                                                open: parseFloat(oData.origin[i].Open), // open
-                                                high: parseFloat(oData.origin[i].High), // high
-                                                low: parseFloat(oData.origin[i].Low), // low
-                                                close: parseFloat(oData.origin[i].Close), // close
-                                                color: color
-                                            });
-
-                                        }
-
-                                        $(nTd).qtip({ // Grab some elements to apply the tooltip to
-
-                                            style: {
-                                                classes: 'myCustomClass'
-                                            },
-                                            position: {
-                                                adjust: {
-                                                    x: -30,
-                                                    y: -30
-                                                }
-                                            },
-                                            hide: {
-                                                fixed: true,
-                                                delay: 300
-                                            },
-
-
-                                            content: {
-                                                text: function(event, api) {
-                                                    Highcharts.stockChart('qtip-' + iRow, {
-                                                        title: {
-                                                            text: oData.code + "  " + oData.name
-                                                        },
-                                                        exporting: {
-                                                            enabled: false
-                                                        },
-                                                        xAxis: {
-                                                            tickPixelInterval: 100
-                                                        },
-                                                        rangeSelector: {
-                                                            enabled: false
-                                                        },
-                                                        navigator: {
-                                                            enabled: false
-                                                        },
-                                                        scrollbar: {
-                                                            enabled: false
-                                                        },
-                                                        /*tooltip: {
-                                                            formatter: function() {
-                                                                console.log(this.points[0].point);
-                                                                return "<h6>" + this.x + "</h6>";
-                                                            }
-                                                        },*/
-                                                        series: [{
-                                                            type: 'candlestick',
-                                                            name: oData.name,
-                                                            data: ohlc
-                                                        }]
-                                                    });
-                                                }
-                                            }
-
-                                        });
-                                    }
-                                },
-                                {
-                                    "data": "ll_hh"
-                                },
-
-                                {
-                                    "data": "id",
-                                    "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-                                        var url = "JavaScript:newPopup('detail.html?id=" + oData.id + "');";
-                                        $(nTd).html("<a href=" + url + ">Detail</a>");
-                                    }
-                                },
-                                {
-                                    "data": "origin"
-                                }
-                            ],
-                            "columnDefs": [{
-                                "targets": [11],
-                                "visible": false,
-                                "searchable": false
-                            }]
-                        });
-                    });
-
-
-                    function getOpen(arr) {
-                        return arr[0].Open;
-                    }
-
-                    function getClose(arr) {
-                        return arr[arr.length - 1].Close;
-                    }
-
-                    function getHHigh(arr) {
-                        var high = 0;
-                        arr.forEach(function(ele, index) {
-                            if (index != 0) {
-                                if (ele.High > high) {
-                                    high = ele.High;
-                                }
-                            }
-
-                        });
-                        return high;
-                    }
-
-                    function getLLow(arr) {
-                        var low = 1000;
-                        arr.forEach(function(ele) {
-                            if (ele.Low < low) {
-                                low = ele.Low;
-                            }
-                        });
-                        return low;
-                    }
-
-                    $scope.add = function() {
-                        var code = $("#code").val();
-                        if (code.charAt(0) == "6") {
-                            code = "sh" + code
-                        } else {
-                            code = "sz" + code
-                        }
-                        url = "http://hq.sinajs.cn/list=" + code
-                        console.log(url);
-
-                        $http({
-                            url: "http://hq.sinajs.cn/list=sz300312",
-                            headers: {
-                                'Access-Control-Allow-Origin': '*',
-                                'Accept': 'application/json',
-                                'X-Login-Ajax-call': 'true'
-                            }
-                        }).then(function(data) {
+                <script>
+                    var stock = angular.module('stock', []);
+                    var dataset = [];
+                    stock.controller('stockCtrl', function($scope, $http) {
+                        $http.get('./back/selectOngoing.php').then(function(data) {
+                            var data = data.data.data;
                             console.log(data);
+                            var table = $('#ongoing').DataTable({
+                                data: data,
+                                order: [
+                                    [2, "desc"]
+                                ],
+                                "pagingType": "full_numbers",
+                                columns: [{
+                                        "data": "Code"
+                                    },
+                                    {
+                                        "data": "Name"
+                                    },
+                                    {
+                                        "data": "Enter_Date"
+                                    }
+                                ]
+                            });
                         });
-                    }
-                });
-            </script>
+
+                        $http.get('./back/selectStocks.php').then(function(data) {
+                            var data = data.data.data;
+                            data = _.groupBy(data, 'ID');
+                            data = _.map(data, function(arr, index) {
+                                return [arr][0];
+                            });
+                            dataset = _.map(data, function(arr, index) {
+                                return {
+                                    id: arr[0].ID,
+                                    code: arr[0].Code,
+                                    name: arr[0].Name,
+                                    date: arr[0].Enter_Date,
+                                    origin: arr,
+                                    open: getOpen(arr),
+                                    close: getClose(arr),
+                                    hh: getHHigh(arr),
+                                    ll: getLLow(arr),
+                                    o_hh: ((getHHigh(arr) - getOpen(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
+                                    o_c: ((getClose(arr) - getOpen(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
+                                    ll_hh: ((getHHigh(arr) - getLLow(arr)) / getOpen(arr) * 100).toFixed(2) + "%",
+                                };
+                            });
+
+                            var table = $('#example').DataTable({
+                                data: dataset,
+                                //bPaginate: false,
+
+                                order: [
+                                    [2, "desc"]
+                                ],
+                                "pagingType": "full_numbers",
+                                columns: [
+
+                                    {
+                                        "data": "code"
+                                    },
+                                    {
+                                        "data": "name",
+                                        "width": "8%"
+                                    },
+                                    {
+                                        "data": "date",
+                                        "width": "10%"
+                                    },
+                                    {
+                                        "data": "open"
+                                    },
+                                    {
+                                        "data": "close"
+                                    },
+                                    {
+                                        "data": "hh"
+                                    },
+                                    {
+                                        "data": "ll"
+                                    },
+                                    {
+                                        "data": "o_hh"
+                                    },
+                                    {
+                                        "data": "o_c",
+                                        "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+
+
+                                            var ohlc = [];
+                                            var groupingUnits = [
+                                                [
+                                                    'week', // unit name
+                                                    [1] // allowed multiples
+                                                ],
+                                                [
+                                                    'month', [1, 2, 3, 4, 6]
+                                                ]
+                                            ];
+                                            for (var i = 0; i < oData.origin.length; i += 1) {
+                                                var da = oData.origin[i].After_Date + "T00:00:00+0000";
+                                                var myDate = new Date(da).getTime();
+                                                var color = "";
+                                                if (oData.origin[i].Open < oData.origin[i].Close) {
+                                                    color = "#FF0000";
+                                                } else if (oData.origin[i].Open == oData.origin[i].Close) {
+                                                    color = "#000000";
+                                                } else {
+                                                    color = "#00FF00";
+                                                }
+                                                ohlc.push({
+                                                    x: myDate,
+                                                    open: parseFloat(oData.origin[i].Open), // open
+                                                    high: parseFloat(oData.origin[i].High), // high
+                                                    low: parseFloat(oData.origin[i].Low), // low
+                                                    close: parseFloat(oData.origin[i].Close), // close
+                                                    color: color
+                                                });
+
+                                            }
+
+                                            $(nTd).qtip({ // Grab some elements to apply the tooltip to
+
+                                                style: {
+                                                    classes: 'myCustomClass'
+                                                },
+                                                position: {
+                                                    adjust: {
+                                                        x: -30,
+                                                        y: -30
+                                                    }
+                                                },
+                                                hide: {
+                                                    fixed: true,
+                                                    delay: 300
+                                                },
+
+
+                                                content: {
+                                                    text: function(event, api) {
+                                                        Highcharts.stockChart('qtip-' + iRow, {
+                                                            title: {
+                                                                text: oData.code + "  " + oData.name
+                                                            },
+                                                            exporting: {
+                                                                enabled: false
+                                                            },
+                                                            xAxis: {
+                                                                tickPixelInterval: 100
+                                                            },
+                                                            rangeSelector: {
+                                                                enabled: false
+                                                            },
+                                                            navigator: {
+                                                                enabled: false
+                                                            },
+                                                            scrollbar: {
+                                                                enabled: false
+                                                            },
+                                                            /*tooltip: {
+                                                                formatter: function() {
+                                                                    console.log(this.points[0].point);
+                                                                    return "<h6>" + this.x + "</h6>";
+                                                                }
+                                                            },*/
+                                                            series: [{
+                                                                type: 'candlestick',
+                                                                name: oData.name,
+                                                                data: ohlc
+                                                            }]
+                                                        });
+                                                    }
+                                                }
+
+                                            });
+                                        }
+                                    },
+                                    {
+                                        "data": "ll_hh"
+                                    },
+
+                                    {
+                                        "data": "id",
+                                        "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+                                            var url = "JavaScript:newPopup('detail.html?id=" + oData.id + "');";
+                                            $(nTd).html("<a href=" + url + ">Detail</a>");
+                                        }
+                                    },
+                                    {
+                                        "data": "origin"
+                                    }
+                                ],
+                                "columnDefs": [{
+                                    "targets": [11],
+                                    "visible": false,
+                                    "searchable": false
+                                }]
+                            });
+                        }).then(function() {
+                            var grp = _.groupBy(dataset, function(ele) {
+                                return ele.date;
+                            });
+
+                            var info = _.map(grp, function(day, date) {
+
+                                var countOH = _.countBy(day, function(ele) {
+                                    return parseFloat(ele.o_hh) > 0 ? 'Red' : 'Green';
+                                });
+                                var countOC = _.countBy(day, function(ele) {
+                                    return parseFloat(ele.o_c) > 0 ? 'Red' : 'Green';
+                                });
+                                return {
+                                    date: day[0].date,
+                                    data: day,
+                                    countOH: countOH,
+                                    countOC: countOC
+                                };
+                            });
+                            console.log(info);
+                            var countO_H = _.countBy(dataset, function(ele) {
+                                return parseFloat(ele.o_hh) > 0 ? 'Red' : 'Green';
+                            });
+                            var countO_C = _.countBy(dataset, function(ele) {
+                                return parseFloat(ele.o_c) > 0 ? 'Red' : 'Green';
+                            });
+                            $scope.statistic = {
+                                total: dataset.length,
+                                countO_H: countO_H,
+                                countO_C: countO_C
+                            };
+
+                            var table = $('#statistic').DataTable({
+                                data: info,
+                                "pagingType": "full_numbers",
+                                columns: [
+
+                                    {
+                                        "data": "date"
+                                    },
+                                    {
+                                        "data": "data",
+                                        "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+                                            var content = "";
+                                            oData.data.forEach(function(ele) {
+                                                content += ele.name + "<br>";
+                                            });
+                                            $(nTd).html(content);
+                                        }
+                                    },
+                                    {
+                                        "data": "countOH",
+                                        "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+                                            var obj = oData.countOH;
+                                            var rate;
+                                            if (typeof(obj.Red) == "undefined") {
+                                                rate = 0;
+                                            } else
+                                            if (typeof(obj.Green) == "undefined") {
+                                                rate = 100;
+                                            } else {
+                                                rate = (parseFloat(obj.Red) / (parseFloat(obj.Red) + parseFloat(obj.Green))).toFixed(4) * 100;
+                                            }
+                                            $(nTd).html(rate + "%");
+                                        }
+                                    },
+                                    {
+                                        "data": "countOC",
+                                        "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+                                            var obj = oData.countOC;
+                                            var rate;
+                                            if (typeof(obj.Red) == "undefined") {
+                                                rate = 0;
+                                            } else
+                                            if (typeof(obj.Green) == "undefined") {
+                                                rate = 100;
+                                            } else {
+                                                rate = (parseFloat(obj.Red) / (parseFloat(obj.Red) + parseFloat(obj.Green))).toFixed(4) * 100;
+                                            }
+                                            $(nTd).html(rate + "%");
+                                        }
+                                    },
+                                ]
+                            });
+
+                        });
+
+                        function getOpen(arr) {
+                            return arr[0].Open;
+                        }
+
+                        function getClose(arr) {
+                            return arr[arr.length - 1].Close;
+                        }
+
+                        function getHHigh(arr) {
+                            var high = 0;
+                            arr.forEach(function(ele, index) {
+                                if (index != 0) {
+                                    if (ele.High > high) {
+                                        high = ele.High;
+                                    }
+                                }
+
+                            });
+                            return high;
+                        }
+
+                        function getLLow(arr) {
+                            var low = 1000;
+                            arr.forEach(function(ele) {
+                                if (ele.Low < low) {
+                                    low = ele.Low;
+                                }
+                            });
+                            return low;
+                        }
+
+
+                    });
+                </script>
 </body>
 
 </html>

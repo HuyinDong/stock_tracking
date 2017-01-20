@@ -1,0 +1,293 @@
+<html>
+
+<head>
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        .style1 {
+            background-color: red;
+        }
+
+        .btn {
+            width: 100%;
+            /* set to 100% */
+            height: 100%;
+            border: solid #cccccc 1px;
+        }
+    </style>
+</head>
+
+
+<body ng-app='cal' ng-controller='calCtrl'>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <thead>
+                                    <h4>Calculator</h4></thead>
+                            </tr>
+                        </thead>
+
+                        <tr>
+
+                            <input type="text" class="form-control" style="width:322px; height:40px; float:left;" ng-model='result' disabled="true">
+
+                        </tr>
+                        <tr ng-repeat="num in nums track by $index">
+                            <td ng-repeat="n in num track by $index" style="width:80px; height:80px; float:left;" ng-mouseover="hoverIn($parent.$index,$index)" ng-mouseleave="hoverOut($parent.$index,$index)" ng-click="add(n)"><input id="{{$parent.$index}}_{{$index}}" class="btn" type="button" value="{{n.value}}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <table class="table table-bordered">
+
+                        <thead>
+                            <tr>
+                                <thead>
+                                    <h4>History</h4></thead>
+                            </tr>
+                        </thead>
+
+                        <tr ng-repeat="his in history track by $index">
+                            <td>{{$index+1}}</td>
+                            <td>{{his}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script>
+        var cal = angular.module('cal', []);
+        cal.controller('calCtrl', function($scope) {
+            $scope.history = [];
+            $scope.result = "";
+            $scope.nums = [
+                [{
+                        value: 'c',
+                        type: 'clear'
+                    },
+                    {
+                        value: 'ce',
+                        type: 'clear'
+                    },
+                    {
+                        value: '=',
+                        type: 'equal'
+                    },
+                    {
+                        value: '',
+                        type: 'reserved'
+                    }
+                ],
+                [{
+                        value: '7',
+                        type: 'number'
+                    },
+                    {
+                        value: '8',
+                        type: 'number'
+                    },
+                    {
+                        value: '9',
+                        type: 'number'
+                    },
+                    {
+                        value: '/',
+                        type: 'operator'
+
+                    }
+                ],
+                [{
+                        value: '4',
+                        type: 'number'
+                    },
+                    {
+                        value: '5',
+                        type: 'number'
+                    },
+                    {
+                        value: '6',
+                        type: 'number'
+                    },
+                    {
+                        value: '*',
+                        type: 'operator'
+
+                    }
+                ],
+                [{
+                        value: '1',
+                        type: 'number'
+                    },
+                    {
+                        value: '2',
+                        type: 'number'
+                    },
+                    {
+                        value: '3',
+                        type: 'number'
+                    },
+                    {
+                        value: '-',
+                        type: 'operator'
+
+                    }
+                ],
+                [{
+                        value: '0',
+                        type: 'number'
+                    },
+
+                    {
+                        value: '9',
+                        type: 'number'
+                    },
+                    {
+                        value: '+',
+                        type: 'operator'
+                    },
+                    {
+                        value: '',
+                        type: 'reserved'
+                    }
+                ]
+            ];
+            $scope.hoverIn = function(col, row) {
+                $("#" + col + "_" + row).addClass("style1");
+            };
+
+            $scope.hoverOut = function(col, row) {
+                $("#" + col + "_" + row).removeClass("style1");
+            };
+
+            var previousType = "";
+            var arr = [];
+            var temp = "";
+            $scope.add = function(n) {
+
+                if (previousType == "operator" && n.type == "operator") {
+                    $scope.result = $scope.result.substr(0, $scope.result.length - 1);
+                }
+                if (n.value == "ce") {
+                    $scope.result = "";
+                    arr = [];
+                    previousType = ""
+                    temp = "";
+                } else if (n.value == "c") {
+                    $scope.result = "";
+                    $scope.history = [];
+                    arr = [];
+                    previousType = ""
+                    temp = "";
+                } else if (n.type != "equal") {
+                    $scope.result += n.value;
+                    if (n.type == "operator") {
+                        if (previousType == "operator") {
+                            arr.splice(length - 1, 1, n);
+
+                        } else {
+                            arr.push({
+                                value: temp,
+                                type: "number"
+                            });
+                            arr.push(n);
+                            temp = "";
+
+                        }
+                    } else {
+                        temp += n.value;
+                    }
+                    previousType = n.type;
+                } else {
+
+                    if (previousType == "operator") {
+                        $scope.result = "Wrong format";
+                    } else {
+                        arr.push({
+                            value: temp,
+                            type: "number"
+                        });
+                        $scope.result += n.value;
+                        var final = cal(arr);
+                        $scope.result += final;
+                    }
+
+                    $scope.history.push($scope.result);
+                    arr = [];
+                    previousType = "";
+                    temp = "";
+                    $scope.result = "";
+                    previousType = n.type;
+                }
+
+            };
+
+            function cal(arr) {
+
+                for (var i = arr.length - 1; i > 0; i--) {
+
+                    if (arr[i].value == "*") {
+                        var res = {
+                            value: parseFloat(arr[i - 1].value) * parseFloat(arr[i + 1].value),
+                            type: "number"
+                        };
+                        arr.splice(i - 1, 3, res);
+
+                    } else if (arr[i].value == "/") {
+                        var res = {
+                            value: parseFloat(arr[i - 1].value) / parseFloat(arr[i + 1].value),
+                            type: "number"
+                        };
+                        arr.splice(i - 1, 3, res);
+
+                    }
+                }
+
+                var i = 0;
+                while (arr.length != 1) {
+
+                    if (arr[1].value == "+") {
+                        var res = {
+                            value: parseFloat(arr[0].value) + parseFloat(arr[2].value),
+                            type: "number"
+                        };
+
+                    } else if (arr[1].value == "-") {
+                        var res = {
+                            value: parseFloat(arr[0].value) - parseFloat(arr[2].value),
+                            type: "number"
+                        };
+                    }
+                    arr.splice(0, 3, res);
+                    var str = "";
+                    arr.forEach(function(ele) {
+                        str += ele.value;
+
+                    });
+
+                }
+
+
+                return arr[0].value;
+            }
+            $(function() {
+
+                //$("#0_2").parent().attr("colspan", 2);
+                $("#4_3").attr("disabled", true);
+                $("#0_3").attr("disabled", true);
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
