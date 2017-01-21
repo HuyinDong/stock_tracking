@@ -11,4 +11,5 @@ $sql = "INSERT INTO Stack_Pool (Code,Name,Enter_Date) values ($para)";
 
 $results  = mysql_query($sql) or die("Query failed: " . mysql_error());
 
+echo "success";
 ?>

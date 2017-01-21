@@ -64,9 +64,10 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
-
                             <li><a href="#">Home</a></li>
+
                         </ul>
+
                     </div>
                     <!-- /.navbar-collapse -->
                     <!-- Navbar Right Menu -->
@@ -91,7 +92,25 @@
                         <div class="col-md-12">
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Ongoing</h3>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <h3 class="box-title">Ongoing</h3>
+                                        </div>
+                                        <div>
+                                            <div class="col-xs-3">
+                                                <input type="text" id="stockCode" class="form-control" placeholder="Code">
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <input type="text" id="stockName" class="form-control" placeholder="Name">
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <input type="button" id="addStock" value="Add" class="btn btn-info btn-flat" ng-click="addStock()" />
+                                            </div>
+                                        </div>
+
+
+                                    </div>
                                 </div>
                                 <div class="box-body">
                                     <table id="ongoing" class="table table-bordered display">
@@ -147,14 +166,17 @@
 
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Statistic</h3>
+                                    <h3 class="box-title">Statistics</h3>
                                 </div>
                                 <div class="box-body">
                                     <table class="table table-bordered display">
                                         <tr>
-                                            <td>Total : {{statistic.total}}</td>
-                                            <td>Red : {{statistic.countO_H.Red}}, Green : {{statistic.countO_H.Green}}, Open to High Earning Rate : {{statistic.countO_H.Red/(statistic.countO_H.Red+statistic.countO_H.Green)* 100 | number:2}}%</td>
-                                            <td>Red : {{statistic.countO_C.Red}}, Green : {{statistic.countO_C.Green}}, Open to Close Earning Rate : {{statistic.countO_C.Red/(statistic.countO_C.Red+statistic.countO_C.Green)* 100 | number:2}}%</td>
+                                            <td>
+                                                <strong>Total : {{statistic.total}}</strong></td>
+                                            <td>
+                                                <strong>Red : {{statistic.countO_H.Red}}, Green : {{statistic.countO_H.Green}}, Open to High Earning Rate : {{statistic.countO_H.Red/(statistic.countO_H.Red+statistic.countO_H.Green)* 100 | number:2}}%</strong></td>
+                                            <td>
+                                                <strong>Red : {{statistic.countO_C.Red}}, Green : {{statistic.countO_C.Green}}, Open to Close Earning Rate : {{statistic.countO_C.Red/(statistic.countO_C.Red+statistic.countO_C.Green)* 100 | number:2}}%</strong></td>
                                         </tr>
                                     </table>
                                     <table id="statistic" class="table table-bordered display">
@@ -480,6 +502,28 @@
                             });
 
                         });
+
+                        $scope.addStock = function() {
+                            var reg = new RegExp('[036]0\\d{4}');
+                            var cr = $.param({
+                                code: $("#stockCode").val(),
+                                name: $("#stockName").val()
+                            });
+
+                            if (!reg.test($("#stockCode").val())) {
+                                alert("please input the right stock code");
+                            } else {
+                                $http.get('./back/insertStock.php?' + cr).then(function(data) {
+                                    if (data.data == "success") {
+                                        alert("successed");
+                                        $("#stockCode").val("");
+                                        $("#stockName").val("");
+                                    }
+                                }, function(err) {
+                                    alert(err);
+                                });
+                            }
+                        };
 
                         function getOpen(arr) {
                             return arr[0].Open;
