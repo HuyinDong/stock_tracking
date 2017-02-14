@@ -376,12 +376,7 @@
                                                             scrollbar: {
                                                                 enabled: false
                                                             },
-                                                            /*tooltip: {
-                                                                formatter: function() {
-                                                                    console.log(this.points[0].point);
-                                                                    return "<h6>" + this.x + "</h6>";
-                                                                }
-                                                            },*/
+
                                                             series: [{
                                                                 type: 'candlestick',
                                                                 name: oData.name,
@@ -518,6 +513,7 @@
                                         alert("successed");
                                         $("#stockCode").val("");
                                         $("#stockName").val("");
+                                        location.reload();
                                     }
                                 }, function(err) {
                                     alert(err);
